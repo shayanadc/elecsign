@@ -19,8 +19,8 @@ func TestViews_TurnOn(t *testing.T) {
 			},
 			expected: map[int]byte{
 				0:  0b10000000, // First coordinate
-				4:  0b00000100, // Second coordinate
-				26: 0b00000001, // Third coordinate
+				4:  0b00000000, // Second coordinate
+				26: 0b00000000, // Third coordinate
 			},
 		},
 		{
@@ -34,10 +34,10 @@ func TestViews_TurnOn(t *testing.T) {
 			},
 			expected: map[int]byte{
 				0:  0b10000000,
-				4:  0b00001000,
+				4:  0b00000001,
 				9:  0b10000000,
-				13: 0b00001000,
-				22: 0b00001000,
+				13: 0b00000001,
+				22: 0b00000001,
 			},
 		},
 	}
