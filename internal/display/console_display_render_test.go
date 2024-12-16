@@ -35,7 +35,7 @@ func TestConsoleRenderer_Render(t *testing.T) {
 			// Setup
 			renderer := &ConsoleRenderer{}
 			display := NewConsoleDisplay(renderer)
-			view := view.NewView(36, 6)
+			view := view.NewView()
 
 			// Create transformer and transform input
 			transformer, _ := transformer.NewTransformer("character")

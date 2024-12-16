@@ -45,7 +45,7 @@ func TestViews_TurnOn(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			v := NewView(36, 6)
+			v := NewView()
 			v.TurnOn(tt.coords)
 
 			got := v.Get()

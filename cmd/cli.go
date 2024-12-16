@@ -74,7 +74,7 @@ func handleAddCommand(args []string, display *display.ConsoleDisplay) {
 		return
 	}
 
-	view := view.NewView(36, 6)
+	view := view.NewView()
 	coordinates := transformerInstance.Transform(text)
 	view.TurnOn(coordinates)
 	display.AddView(view)
