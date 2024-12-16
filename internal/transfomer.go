@@ -6,7 +6,7 @@ import (
 )
 
 type Coordinate struct {
-	x, y int
+	rowIndex, columnIndex int
 }
 type InputTransformer struct {
 	minRow    rune
@@ -71,14 +71,14 @@ func (t *InputTransformer) parseCoordinate(input string) (Coordinate, error) {
 	}
 
 	return Coordinate{
-		x: int(row - t.minRow),
-		y: col,
+		rowIndex:    int(row - t.minRow),
+		columnIndex: col,
 	}, nil
 }
 
 // Validation methods
 func (t *InputTransformer) isValidPosition(coord Coordinate) bool {
-	return t.isValidRow(rune(coord.x+int('A'))) && t.isValidColumn(coord.y)
+	return t.isValidRow(rune(coord.rowIndex+int('A'))) && t.isValidColumn(coord.columnIndex)
 }
 
 func (t *InputTransformer) isValidRow(char rune) bool {
