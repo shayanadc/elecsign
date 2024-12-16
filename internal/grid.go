@@ -19,6 +19,11 @@ func NewGrid(height, width int) *Grid {
 	}
 }
 
+func (g *Grid) isValidCoordinate(coord Coordinate) bool {
+	return coord.rowIndex >= 0 && coord.rowIndex < g.height &&
+		coord.columnIndex >= 0 && coord.columnIndex < g.width
+}
+
 func (g *Grid) TurnOn(coord Coordinate) error {
 	if !g.isValidCoordinate(coord) {
 		return fmt.Errorf("invalid coordinate: row=%d, col=%d", coord.rowIndex, coord.columnIndex)
@@ -29,20 +34,14 @@ func (g *Grid) TurnOn(coord Coordinate) error {
 	bitIndex := position % byteSize
 
 	// Calculate bit position from right to left (7 to 0)
-	bitPosition := (byteSize - 1) - bitIndex
-
-	// Set the bit at the calculated position
-	g.data[byteIndex] |= (1 << bitPosition)
+	// For bit position 3, we want 00001000
+	g.data[byteIndex] |= (1 << (7 - bitIndex))
 
 	return nil
 }
 
-func (g *Grid) isValidCoordinate(coord Coordinate) bool {
-	return coord.rowIndex >= 0 && coord.rowIndex < g.height &&
-		coord.columnIndex >= 0 && coord.columnIndex < g.width
-}
-
 func (g *Grid) calculatePosition(coord Coordinate) int {
+	// Calculate the absolute position in the grid
 	return (coord.rowIndex * g.width) + coord.columnIndex
 }
 

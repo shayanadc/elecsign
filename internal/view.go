@@ -29,3 +29,10 @@ func (v *View) IsOn(c Coordinate) bool {
 
 	return on
 }
+
+// TurnOn turns on multiple pixels at the given coordinates
+func (v *View) TurnOn(coords []Coordinate) {
+	for _, coord := range coords {
+		_ = v.data.TurnOn(coord)
+	}
+}
