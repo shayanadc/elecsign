@@ -20,3 +20,12 @@ func NewView(width, height int) *View {
 func (v *View) Get() Grid {
 	return v.data
 }
+
+func (v *View) IsOn(c Coordinate) bool {
+	on, err := v.data.IsOn(c)
+	if err != nil {
+		return false
+	}
+
+	return on
+}

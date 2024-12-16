@@ -67,3 +67,56 @@ func TestViews_Get(t *testing.T) {
 		})
 	}
 }
+
+func TestViews_IsOn(t *testing.T) {
+	tests := []struct {
+		name    string
+		setup   func(*View)
+		coord   Coordinate
+		want    bool
+		wantErr bool
+	}{
+		{
+			name: "pixel is on",
+			setup: func(v *View) {
+				v.data.TurnOn(Coordinate{rowIndex: 2, columnIndex: 3})
+			},
+			coord:   Coordinate{rowIndex: 2, columnIndex: 3},
+			want:    true,
+			wantErr: false,
+		},
+		{
+			name:    "pixel is off",
+			setup:   func(v *View) {},
+			coord:   Coordinate{rowIndex: 2, columnIndex: 3},
+			want:    false,
+			wantErr: false,
+		},
+		{
+			name:    "invalid coordinate negative row",
+			setup:   func(v *View) {},
+			coord:   Coordinate{rowIndex: -1, columnIndex: 0},
+			want:    false,
+			wantErr: true,
+		},
+		{
+			name:    "invalid coordinate column too large",
+			setup:   func(v *View) {},
+			coord:   Coordinate{rowIndex: 0, columnIndex: 36},
+			want:    false,
+			wantErr: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			v := NewView(36, 6)
+			tt.setup(v)
+
+			got := v.IsOn(tt.coord)
+			if got != tt.want {
+				t.Errorf("IsOn() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
