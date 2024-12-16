@@ -45,3 +45,15 @@ func (g *Grid) isValidCoordinate(coord Coordinate) bool {
 func (g *Grid) calculatePosition(coord Coordinate) int {
 	return (coord.rowIndex * g.width) + coord.columnIndex
 }
+
+func (g *Grid) IsOn(coord Coordinate) (bool, error) {
+	if !g.isValidCoordinate(coord) {
+		return false, fmt.Errorf("invalid coordinate: row=%d, col=%d", coord.rowIndex, coord.columnIndex)
+	}
+
+	position := g.calculatePosition(coord)
+	byteIndex := position / byteSize
+	bitIndex := position % byteSize
+
+	return g.data[byteIndex]&(1<<((byteSize-1)-bitIndex)) != 0, nil
+}
