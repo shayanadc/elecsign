@@ -1,4 +1,4 @@
-package internal
+package transformer
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 )
 
 type Coordinate struct {
-	rowIndex, columnIndex int
+	RowIndex, ColumnIndex int
 }
 type InputTransformer struct {
 	minRow    rune
@@ -71,14 +71,14 @@ func (t *InputTransformer) parseCoordinate(input string) (Coordinate, error) {
 	}
 
 	return Coordinate{
-		rowIndex:    int(row - t.minRow),
-		columnIndex: col,
+		RowIndex:    int(row - t.minRow),
+		ColumnIndex: col,
 	}, nil
 }
 
 // Validation methods
 func (t *InputTransformer) isValidPosition(coord Coordinate) bool {
-	return t.isValidRow(rune(coord.rowIndex+int('A'))) && t.isValidColumn(coord.columnIndex)
+	return t.isValidRow(rune(coord.RowIndex+int('A'))) && t.isValidColumn(coord.ColumnIndex)
 }
 
 func (t *InputTransformer) isValidRow(char rune) bool {

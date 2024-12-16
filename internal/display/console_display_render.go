@@ -1,20 +1,25 @@
-package internal
+package display
 
-import "fmt"
+import (
+	"elecsign/internal/grid"
+	"elecsign/internal/transformer"
+	"elecsign/internal/view"
+	"fmt"
+)
 
 // ConsoleRenderer struct for rendering grids to the console
 type ConsoleRenderer struct{}
 
 // ConsoleDisplay struct to manage views and render them
 type ConsoleDisplay struct {
-	views    []View
+	views    []view.View
 	renderer Renderer
 }
 
 // NewConsoleDisplay creates a new ConsoleDisplay
 func NewConsoleDisplay(r Renderer) *ConsoleDisplay {
 	return &ConsoleDisplay{
-		views:    make([]View, 0),
+		views:    make([]view.View, 0),
 		renderer: r,
 	}
 }
@@ -27,7 +32,7 @@ func (d *ConsoleDisplay) Show() {
 }
 
 // AddView adds a new view to the ConsoleDisplay
-func (d *ConsoleDisplay) AddView(v View) {
+func (d *ConsoleDisplay) AddView(v view.View) {
 	d.views = append(d.views, v)
 }
 
@@ -37,10 +42,10 @@ func (d *ConsoleDisplay) Clear() {
 }
 
 // Render method to display the grid in a human-readable format
-func (c *ConsoleRenderer) Render(grid Grid) {
-	for row := 0; row < grid.height; row++ {
-		for col := 0; col < grid.width; col++ {
-			coord := Coordinate{rowIndex: row, columnIndex: col}
+func (c *ConsoleRenderer) Render(grid grid.Grid) {
+	for row := 0; row < grid.Height; row++ {
+		for col := 0; col < grid.Width; col++ {
+			coord := transformer.Coordinate{RowIndex: row, ColumnIndex: col}
 			on, _ := grid.IsOn(coord)
 			if on {
 				fmt.Print("*") // On pixel

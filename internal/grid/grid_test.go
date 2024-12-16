@@ -1,44 +1,47 @@
-package internal
+package grid
 
-import "testing"
+import (
+	"elecsign/internal/transformer"
+	"testing"
+)
 
 func TestGrid_TurnOn(t *testing.T) {
 	tests := []struct {
 		name        string
-		coord       Coordinate
+		coord       transformer.Coordinate
 		wantErr     bool
 		expectedBit byte
 	}{
 		{
 			name:        "valid coordinate middle of display",
-			coord:       Coordinate{rowIndex: 2, columnIndex: 3},
+			coord:       transformer.Coordinate{RowIndex: 2, ColumnIndex: 3},
 			wantErr:     false,
 			expectedBit: 0b00010000, // bit 4 set in the appropriate byte
 		},
 		{
 			name:        "valid coordinate first position",
-			coord:       Coordinate{rowIndex: 0, columnIndex: 0},
+			coord:       transformer.Coordinate{RowIndex: 0, ColumnIndex: 0},
 			wantErr:     false,
 			expectedBit: 0b10000000, // leftmost bit set
 		},
 		{
 			name:    "invalid coordinate negative row",
-			coord:   Coordinate{rowIndex: -1, columnIndex: 0},
+			coord:   transformer.Coordinate{RowIndex: -1, ColumnIndex: 0},
 			wantErr: true,
 		},
 		{
 			name:    "invalid coordinate negative column",
-			coord:   Coordinate{rowIndex: 0, columnIndex: -1},
+			coord:   transformer.Coordinate{RowIndex: 0, ColumnIndex: -1},
 			wantErr: true,
 		},
 		{
 			name:    "invalid coordinate row too large",
-			coord:   Coordinate{rowIndex: 6, columnIndex: 0},
+			coord:   transformer.Coordinate{RowIndex: 6, ColumnIndex: 0},
 			wantErr: true,
 		},
 		{
 			name:    "invalid coordinate column too large",
-			coord:   Coordinate{rowIndex: 0, columnIndex: 36},
+			coord:   transformer.Coordinate{RowIndex: 0, ColumnIndex: 36},
 			wantErr: true,
 		},
 	}
@@ -55,12 +58,12 @@ func TestGrid_TurnOn(t *testing.T) {
 
 			if !tt.wantErr {
 				// Calculate which byte should contain our bit
-				position := (tt.coord.rowIndex * g.width) + tt.coord.columnIndex
+				position := (tt.coord.RowIndex * g.Width) + tt.coord.ColumnIndex
 				byteIndex := position / 8
 
 				// Verify the bit was set correctly
-				if g.data[byteIndex] != tt.expectedBit {
-					t.Errorf("TurnOn() got byte = %08b, want %08b", g.data[byteIndex], tt.expectedBit)
+				if g.Data[byteIndex] != tt.expectedBit {
+					t.Errorf("TurnOn() got byte = %08b, want %08b", g.Data[byteIndex], tt.expectedBit)
 				}
 			}
 		})
@@ -71,47 +74,47 @@ func TestGrid_IsOn(t *testing.T) {
 	tests := []struct {
 		name    string
 		setup   func(*Grid)
-		coord   Coordinate
+		coord   transformer.Coordinate
 		want    bool
 		wantErr bool
 	}{
 		{
 			name: "pixel is on",
 			setup: func(g *Grid) {
-				g.TurnOn(Coordinate{rowIndex: 2, columnIndex: 3})
+				g.TurnOn(transformer.Coordinate{RowIndex: 2, ColumnIndex: 3})
 			},
-			coord:   Coordinate{rowIndex: 2, columnIndex: 3},
+			coord:   transformer.Coordinate{RowIndex: 2, ColumnIndex: 3},
 			want:    true,
 			wantErr: false,
 		},
 		{
 			name:    "pixel is off",
 			setup:   func(g *Grid) {},
-			coord:   Coordinate{rowIndex: 2, columnIndex: 3},
+			coord:   transformer.Coordinate{RowIndex: 2, ColumnIndex: 3},
 			want:    false,
 			wantErr: false,
 		},
 		{
 			name:    "invalid coordinate negative row",
 			setup:   func(g *Grid) {},
-			coord:   Coordinate{rowIndex: -1, columnIndex: 0},
+			coord:   transformer.Coordinate{RowIndex: -1, ColumnIndex: 0},
 			want:    false,
 			wantErr: true,
 		},
 		{
 			name:    "invalid coordinate column too large",
 			setup:   func(g *Grid) {},
-			coord:   Coordinate{rowIndex: 0, columnIndex: 36},
+			coord:   transformer.Coordinate{RowIndex: 0, ColumnIndex: 36},
 			want:    false,
 			wantErr: true,
 		},
 		{
 			name: "multiple pixels on",
 			setup: func(g *Grid) {
-				g.TurnOn(Coordinate{rowIndex: 0, columnIndex: 0})
-				g.TurnOn(Coordinate{rowIndex: 0, columnIndex: 1})
+				g.TurnOn(transformer.Coordinate{RowIndex: 0, ColumnIndex: 0})
+				g.TurnOn(transformer.Coordinate{RowIndex: 0, ColumnIndex: 1})
 			},
-			coord:   Coordinate{rowIndex: 0, columnIndex: 1},
+			coord:   transformer.Coordinate{RowIndex: 0, ColumnIndex: 1},
 			want:    true,
 			wantErr: false,
 		},

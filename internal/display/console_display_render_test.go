@@ -1,7 +1,9 @@
-package internal
+package display
 
 import (
 	"bytes"
+	"elecsign/internal/transformer"
+	"elecsign/internal/view"
 	"io"
 	"os"
 	"strings"
@@ -33,10 +35,10 @@ func TestConsoleRenderer_Render(t *testing.T) {
 			// Setup
 			renderer := &ConsoleRenderer{}
 			display := NewConsoleDisplay(renderer)
-			view := NewView(36, 6)
+			view := view.NewView(36, 6)
 
 			// Create transformer and transform input
-			transformer, _ := NewTransformer("character")
+			transformer, _ := transformer.NewTransformer("character")
 			coordinates := transformer.Transform(tt.input)
 			view.TurnOn(coordinates)
 			display.AddView(view)

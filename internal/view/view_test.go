@@ -1,21 +1,22 @@
-package internal
+package view
 
 import (
+	"elecsign/internal/transformer"
 	"testing"
 )
 
 func TestViews_TurnOn(t *testing.T) {
 	tests := []struct {
 		name     string
-		coords   []Coordinate
+		coords   []transformer.Coordinate
 		expected map[int]byte
 	}{
 		{
 			name: "multiple coordinates",
-			coords: []Coordinate{
-				{rowIndex: 0, columnIndex: 0}, // First bit in first byte
-				{rowIndex: 1, columnIndex: 5}, // Bit 5 in byte 4
-				{rowIndex: 5, columnIndex: 7}, // Last bit in byte 26
+			coords: []transformer.Coordinate{
+				{RowIndex: 0, ColumnIndex: 0}, // First bit in first byte
+				{RowIndex: 1, ColumnIndex: 5}, // Bit 5 in byte 4
+				{RowIndex: 5, ColumnIndex: 7}, // Last bit in byte 26
 			},
 			expected: map[int]byte{
 				0:  0b10000000, // First coordinate
@@ -25,12 +26,12 @@ func TestViews_TurnOn(t *testing.T) {
 		},
 		{
 			name: "row coordinates",
-			coords: []Coordinate{
-				{rowIndex: 0, columnIndex: 0}, // First bit in byte 0
-				{rowIndex: 1, columnIndex: 3}, // Bit 3 in byte 4
-				{rowIndex: 2, columnIndex: 0}, // First bit in byte 9
-				{rowIndex: 3, columnIndex: 3}, // Bit 3 in byte 13
-				{rowIndex: 5, columnIndex: 3}, // Bit 3 in byte 22
+			coords: []transformer.Coordinate{
+				{RowIndex: 0, ColumnIndex: 0}, // First bit in byte 0
+				{RowIndex: 1, ColumnIndex: 3}, // Bit 3 in byte 4
+				{RowIndex: 2, ColumnIndex: 0}, // First bit in byte 9
+				{RowIndex: 3, ColumnIndex: 3}, // Bit 3 in byte 13
+				{RowIndex: 5, ColumnIndex: 3}, // Bit 3 in byte 22
 			},
 			expected: map[int]byte{
 				0:  0b10000000,
@@ -49,9 +50,9 @@ func TestViews_TurnOn(t *testing.T) {
 
 			got := v.Get()
 			for byteIdx, expected := range tt.expected {
-				if got.data[byteIdx] != expected {
+				if got.Data[byteIdx] != expected {
 					t.Errorf("byte[%d] = %08b, want %08b",
-						byteIdx, got.data[byteIdx], expected)
+						byteIdx, got.Data[byteIdx], expected)
 				}
 			}
 		})

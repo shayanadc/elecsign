@@ -1,4 +1,4 @@
-package internal
+package transformer
 
 import (
 	"reflect"
@@ -17,24 +17,24 @@ func TestInputTransformer_Transform(t *testing.T) {
 			name:  "single coordinate",
 			input: "A0",
 			want: []Coordinate{
-				{rowIndex: 0, columnIndex: 0}, // A0 maps to (0,0)
+				{RowIndex: 0, ColumnIndex: 0}, // A0 maps to (0,0)
 			},
 		},
 		{
 			name:  "multiple coordinates same row",
 			input: "A0A1A2",
 			want: []Coordinate{
-				{rowIndex: 0, columnIndex: 0},
-				{rowIndex: 0, columnIndex: 1},
-				{rowIndex: 0, columnIndex: 2},
+				{RowIndex: 0, ColumnIndex: 0},
+				{RowIndex: 0, ColumnIndex: 1},
+				{RowIndex: 0, ColumnIndex: 2},
 			},
 		},
 		{
 			name:  "coordinates across rows",
 			input: "A35B0",
 			want: []Coordinate{
-				{rowIndex: 0, columnIndex: 35},
-				{rowIndex: 1, columnIndex: 0},
+				{RowIndex: 0, ColumnIndex: 35},
+				{RowIndex: 1, ColumnIndex: 0},
 			},
 		},
 		{
@@ -51,8 +51,8 @@ func TestInputTransformer_Transform(t *testing.T) {
 			name:  "last valid positions",
 			input: "F34F35",
 			want: []Coordinate{
-				{rowIndex: 5, columnIndex: 34},
-				{rowIndex: 5, columnIndex: 35},
+				{RowIndex: 5, ColumnIndex: 34},
+				{RowIndex: 5, ColumnIndex: 35},
 			},
 		},
 	}

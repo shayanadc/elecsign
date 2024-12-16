@@ -1,4 +1,4 @@
-package internal
+package transformer
 
 type CharacterTransformer struct {
 	InputTransformer
@@ -40,11 +40,11 @@ func (t *CharacterTransformer) Transform(input string) []Coordinate {
 			// Apply offset to each coordinate
 			for _, coord := range baseCoordinates {
 				// Only add if the shifted coordinate is within bounds
-				shiftedColumn := coord.columnIndex + offset
+				shiftedColumn := coord.ColumnIndex + offset
 				if shiftedColumn < t.maxColumn {
 					allCoordinates = append(allCoordinates, Coordinate{
-						rowIndex:    coord.rowIndex,
-						columnIndex: shiftedColumn,
+						RowIndex:    coord.RowIndex,
+						ColumnIndex: shiftedColumn,
 					})
 				}
 			}
