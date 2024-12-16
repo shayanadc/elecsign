@@ -1,18 +1,86 @@
 package main
 
-import "elecsign/internal"
+import (
+	"bufio"
+	"elecsign/internal"
+	"fmt"
+	"os"
+	"strings"
+)
 
 func main() {
 	renderer := &internal.ConsoleRenderer{}
 	display := internal.NewConsoleDisplay(renderer)
 
-	// Create a new view and turn on some pixels
-	view1 := internal.NewView(36, 6)
-	inputTransormer, _ := internal.NewTransformer("character")
-	// coordinates := inputTransormer.Transform("A5A6A8A9A13A14A16A17A20A21A22A23A24A30B4B5B6B9B10B12B13B16B17B19B20B29B31C3C4C5C6C10C11C12C16C17C20C21C28C32D2D3D5D6D10D11D12DG561J1216D17D22D23D27D2GH1201245168D29D33E1E2E3E4E5E6E9E10E12E13E16E17E23E24E26E30E34F1F2F5F6F8F9F13F14F16F17F19F20F21F22F23F25F26F27F28F29F30F31F32F33F34F35")
-	coordinates := inputTransormer.Transform("ABC123ABC123")
-	view1.TurnOn(coordinates)
+	fmt.Println("Electronic Sign CLI")
+	fmt.Println("Commands:")
+	fmt.Println("  add <type> <text> - Add a new view (type: pixel or character)")
+	fmt.Println("  show            - Display all views")
+	fmt.Println("  clear           - Clear all views")
+	fmt.Println("  exit            - Exit the program")
 
-	display.AddView(view1)
-	display.Show()
+	scanner := bufio.NewScanner(os.Stdin)
+	for {
+		fmt.Print("> ")
+		if !scanner.Scan() {
+			break
+		}
+
+		input := scanner.Text()
+		args := strings.Fields(input)
+		if len(args) == 0 {
+			continue
+		}
+
+		command := args[0]
+		switch command {
+		case "add":
+			if len(args) < 3 {
+				fmt.Println("Usage: add <type> <text>")
+				fmt.Println("Types: pixel, character")
+				continue
+			}
+
+			transformerType := args[1]
+			if transformerType != "pixel" && transformerType != "character" {
+				fmt.Println("Invalid type. Use 'pixel' or 'character'")
+				continue
+			}
+
+			text := strings.Join(args[2:], " ")
+			// Convert string to internal.TransformerType
+			transformer := internal.TransformerType(transformerType)
+
+			// Create the transformer and handle multiple return values
+			transformerInstance, err := internal.NewTransformer(transformer)
+			if err != nil {
+				fmt.Printf("Error creating transformer: %v\n", err)
+				continue
+			}
+
+			view := internal.NewView(36, 6)
+			coordinates := transformerInstance.Transform(text)
+			view.TurnOn(coordinates)
+			display.AddView(view)
+			fmt.Printf("View added with %s transformer\n", transformerType)
+
+		case "show":
+			fmt.Println("Displaying all views:")
+			fmt.Println(strings.Repeat("-", 36))
+			display.Show()
+			fmt.Println(strings.Repeat("-", 36))
+			display.Clear()
+
+		case "clear":
+			display.Clear()
+			fmt.Println("All views cleared")
+
+		case "exit":
+			fmt.Println("Goodbye!")
+			return
+
+		default:
+			fmt.Println("Unknown command. Available commands: add, show, clear, exit")
+		}
+	}
 }
