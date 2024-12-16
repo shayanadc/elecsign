@@ -31,7 +31,7 @@ func (t *InputTransformer) Transform(input string) []Coordinate {
 	currentStart := 0
 
 	// Add sentinel character
-	input = input + "X"
+	input = input + "/"
 
 	for i := 1; i < len(input); i++ {
 		currentChar := rune(input[i])
