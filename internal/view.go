@@ -1,27 +1,27 @@
 package internal
 
-type ViewManager interface {
+type View interface {
 	IsOn(c Coordinate) bool
 	Get() Grid
 	TurnOn([]Coordinate)
 }
 
-type View struct {
+type GridView struct {
 	data Grid
 }
 
 // NewView creates a new View with a fixed-size Grid
-func NewView(width, height int) *View {
-	return &View{
+func NewView(width, height int) *GridView {
+	return &GridView{
 		data: *NewGrid(height, width),
 	}
 }
 
-func (v *View) Get() Grid {
+func (v *GridView) Get() Grid {
 	return v.data
 }
 
-func (v *View) IsOn(c Coordinate) bool {
+func (v *GridView) IsOn(c Coordinate) bool {
 	on, err := v.data.IsOn(c)
 	if err != nil {
 		return false
@@ -31,7 +31,7 @@ func (v *View) IsOn(c Coordinate) bool {
 }
 
 // TurnOn turns on multiple pixels at the given coordinates
-func (v *View) TurnOn(coords []Coordinate) {
+func (v *GridView) TurnOn(coords []Coordinate) {
 	for _, coord := range coords {
 		_ = v.data.TurnOn(coord)
 	}
