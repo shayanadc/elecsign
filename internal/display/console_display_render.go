@@ -5,6 +5,7 @@ import (
 	"elecsign/internal/transformer"
 	"elecsign/internal/view"
 	"fmt"
+	"strings"
 )
 
 type Display interface {
@@ -28,18 +29,22 @@ func NewConsoleRenderer() *ConsoleRenderer {
 
 // Render method to display the grid in a human-readable format
 func (c *ConsoleRenderer) Render(grid grid.Grid) {
+	var output strings.Builder
+	output.Grow(grid.Height * (grid.Width + 1)) // +1 for newline characters
+
 	for row := 0; row < grid.Height; row++ {
 		for col := 0; col < grid.Width; col++ {
 			coord := transformer.Coordinate{RowIndex: row, ColumnIndex: col}
-			on, _ := grid.IsOn(coord)
-			if on {
-				fmt.Print("*") // On pixel
+			if on, _ := grid.IsOn(coord); on {
+				output.WriteByte('*')
 			} else {
-				fmt.Print(" ") // Off pixel
+				output.WriteByte(' ')
 			}
 		}
-		fmt.Println() // New line after each row
+		output.WriteByte('\n')
 	}
+
+	fmt.Println(output.String())
 }
 
 // ConsoleDisplay struct to manage views and render them
@@ -70,5 +75,5 @@ func (d *ConsoleDisplay) AddView(v view.View) {
 
 // Clear removes all views from the ConsoleDisplay
 func (d *ConsoleDisplay) Clear() {
-	d.views = nil
+	d.views = d.views[:0]
 }
