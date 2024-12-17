@@ -75,5 +75,5 @@ func (d *ConsoleDisplay) AddView(v view.View) {
 
 // Clear removes all views from the ConsoleDisplay
 func (d *ConsoleDisplay) Clear() {
-	d.views = nil
+	d.views = d.views[:0]
 }
