@@ -1,14 +1,24 @@
 # Electronic Sign Application
-### Problem
-Implement an application simulating an electronic sign with a 6x36 pixel grid. Each pixel can be On or Off. The grid supports input as a sequence of pixel positions to be turned On. Pixels are labeled A0 (top-left) to F35 (bottom-right), where letters represent rows (A-F) and numbers represent columns (0-35). The application should also store a sequence of views in memory.
+
+### Intro
+Imagine you have a digital bulletin board, like the ones you might see at a train station or sports stadium.
+
+This board is like a grid of tiny light bulbs - 6 rows (labeled A to F) and 36 columns (numbered 0 to 35). Each bulb can be either on or off.
+
+The program works like this:
+Think of it like giving directions to turn on specific lights:
+When you type something like "A1", you're saying "turn on the light in row A, column 1"
+
+The program does three main things:
+1. Takes input instructions (like "A2B12C34")
+2. Figures out which lights to turn on (like a translator)
+3. Shows you the result using stars (*) for lit bulbs and spaces for unlit ones
+It's like having a photo album:
 
 
-* Enter a view as a sequence of pixels and save it in memory
-* Print all views stored in memory
-* Clear the memory
 
  **Table of content:**
- - [Intro](#item1)
+ - [Challenges](#item1)
  - [Usage](#item2)
  - [Installation](#item3)
     - [Build](#item4)
@@ -29,7 +39,7 @@ Implement an application simulating an electronic sign with a 6x36 pixel grid. E
 
  <!-- headings -->
  <a id="item1"></a>
-### Intro
+### Challenges
 The challenges of this application to display all stored views and managing the memory efficiently.
 - Maintaining modularity for future extensions
 - System design principles
@@ -107,6 +117,12 @@ Commands:
  <!-- headings -->
  <a id="item6.1"></a>
 ## Implementation
+
+
+* Enter a view as a sequence of pixels and save it in memory
+* Print all views stored in memory
+* Clear the memory
+
  <!-- headings -->
  <a id="item7"></a>
 
@@ -255,4 +271,4 @@ electronic-sign/
  <a id="item17"></a>
 
 ### Fault Tolerance
-The application implements multiple layers of fault tolerance to ensure graceful handling of invalid inputs, out-of-bounds conditions.
+If you make a mistake (like typing "G1" when there's no row G), the program simply ignores it and continues with the valid instructions, just like a GPS recalculating when you make a wrong turn.
