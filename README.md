@@ -1,27 +1,44 @@
 # Electronic Sign Application
 
+### Problem
+Implement an application simulating an electronic sign with a 6x36 pixel grid. Each pixel can be On or Off. The grid supports input as a sequence of pixel positions to be turned On. Pixels are labeled A0 (top-left) to F35 (bottom-right), where letters represent rows (A-F) and numbers represent columns (0-35). The application should also store a sequence of views in memory.
+
+* Enter a view as a sequence of pixels and save it in memory
+* Print all views stored in memory
+* Clear the memory
+### Usage
+```
+Electronic Sign CLI
+Commands:
+  add <type> <text> - Add a new view (type: pixel or character)
+  show            - Display all views
+  clear           - Clear all views
+  exit            - Exit the program
+```
+>>>
+
+> add pixel E35B12C5
+
+> add character ABC123
+
+>>> View added with character transformer
+
+> show
+
+>>> Displaying all views:
+
 ### Installation Guide
 
 + Manual Installation (Go)
     - Install Go (version 1.21 or later)
-```
+    - Docker 
+    - Clone the repository
+    - Build and run the application
 
-# macOS using Homebrew
+### Build and run the application
 
-    Install Go (version 1.21 or later)
-    sudo apt-get update
-    sudo apt-get install golang-go
-    go version
-```
-
-- Clone the repository
-
-```
-    git clone repository-url electronic-sign
-
-    cd electronic-sign
-    
-    go build -o elecsign cmd/main.go
+```    
+    go build -o elecsign main.go
     
     ./elecsign
 ```
@@ -30,15 +47,13 @@
 ```
     docker build -t elecsign .
     docker run -it elecsign
-    docker run -it --rm electronic-sign
+    docker run -it --rm elecsign
 ```
-### Problem
-Implement an application simulating an electronic sign with a 6x36 pixel grid. Each pixel can be On or Off. The grid supports input as a sequence of pixel positions to be turned On. Pixels are labeled A0 (top-left) to F35 (bottom-right), where letters represent rows (A-F) and numbers represent columns (0-35). The application should also store a sequence of views in memory.
 
-* Enter a view as a sequence of pixels and save it in memory
-* Print all views stored in memory
-* Clear the memory
-
+### Test
+```
+    go test -v ./...
+```
 
 ### Grid Data Structure
 As the size of array for saving the bitwise (On/Off) is fixed it would be more efficient to take it a fixed array size so, size is known at compile time, allowing for better memory allocation
@@ -136,7 +151,7 @@ The Renderable interface allows our application to support multiple display type
 ```
 
 ### Memory Clean Up
-The display manager cleanup the memory after showing the items. To avoid constantly re allocating memory
+The display manager cleanup the memory after showing the items (show command). To avoid constantly re allocating memory
 ```
 // Clear all views
 func (v *View) Clear() {
