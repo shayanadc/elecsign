@@ -60,9 +60,6 @@ func TestConsoleRenderer_Render(t *testing.T) {
 			// Compare output
 			output := strings.Split(strings.TrimRight(buf.String(), "\n"), "\n")
 
-			// Debug output
-			t.Logf("Got output:\n%s", buf.String())
-
 			if len(output) != len(tt.expected) {
 				t.Errorf("Expected %d lines, got %d", len(tt.expected), len(output))
 				return
