@@ -1,7 +1,13 @@
 package main
 
-import "elecsign/cmd"
+import (
+	"elecsign/cmd"
+	"elecsign/internal/display"
+)
 
 func main() {
-	cmd.RunCLI()
+	renderer := display.NewConsoleRenderer()
+	display := display.NewConsoleDisplay(renderer)
+
+	cmd.RunCLI(display)
 }

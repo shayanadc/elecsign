@@ -33,13 +33,13 @@ func TestConsoleRenderer_Render(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Setup
-			renderer := &ConsoleRenderer{}
+			renderer := NewConsoleRenderer()
 			display := NewConsoleDisplay(renderer)
 			view := view.NewView()
 
 			// Create transformer and transform input
 			transformer, _ := transformer.NewTransformer("character")
-			coordinates := transformer.Transform(tt.input)
+			coordinates := transformer.Transform(tt.input, 0)
 			view.TurnOn(coordinates)
 			display.AddView(view)
 
