@@ -1,11 +1,12 @@
 package display
 
 import (
+	"fmt"
+	"strings"
+
 	"elecsign/internal/grid"
 	"elecsign/internal/transformer"
 	"elecsign/internal/view"
-	"fmt"
-	"strings"
 )
 
 type Display interface {

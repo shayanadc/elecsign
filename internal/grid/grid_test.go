@@ -1,8 +1,9 @@
 package grid
 
 import (
-	"elecsign/internal/transformer"
 	"testing"
+
+	"elecsign/internal/transformer"
 )
 
 func TestGrid_TurnOn(t *testing.T) {
@@ -61,7 +62,6 @@ func TestGrid_TurnOn(t *testing.T) {
 				position := (tt.coord.RowIndex * g.Width) + tt.coord.ColumnIndex
 				byteIndex := position / 8
 
-				// Verify the bit was set correctly
 				if g.Data[byteIndex] != tt.expectedBit {
 					t.Errorf("TurnOn() got byte = %08b, want %08b", g.Data[byteIndex], tt.expectedBit)
 				}

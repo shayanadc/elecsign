@@ -1,33 +1,40 @@
 # Electronic Sign Application
+### Problem
+Implement an application simulating an electronic sign with a 6x36 pixel grid. Each pixel can be On or Off. The grid supports input as a sequence of pixel positions to be turned On. Pixels are labeled A0 (top-left) to F35 (bottom-right), where letters represent rows (A-F) and numbers represent columns (0-35). The application should also store a sequence of views in memory.
+
+
+* Enter a view as a sequence of pixels and save it in memory
+* Print all views stored in memory
+* Clear the memory
 
  **Table of content:**
- - [Problem](#item1)
+ - [Intro](#item1)
  - [Usage](#item2)
  - [Installation](#item3)
- - [Build](#item4)
- - [Docker](#item5)
- - [Test](#item6)
- - [Data Structure](#item7)
- - [Flow](#item8)
- - [Entities](#item9)
- - [Transformation](#item10)
- - [Storage](#item11)
- - [View](#item12)
- - [Characters](#item13)
- - [Display](#item14)
- - [Memory Clean Up](#item15)
+    - [Build](#item4)
+    - [Docker](#item5)
+    - [Test](#item6)
+ - [Implementation](#item6.1)
+    - [Data Structure](#item7)
+    - [Flow](#item8)
+    - [Entities](#item9)
+    - [Transformation](#item10)
+    - [Storage](#item11)
+    - [View](#item12)
+    - [Characters](#item13)
+    - [Display](#item14)
+    - [Memory Clean Up](#item15)
  - [Project Structure](#item16)
  - [Fault Tolerance](#item17)
 
  <!-- headings -->
  <a id="item1"></a>
- 
-### Problem
-Implement an application simulating an electronic sign with a 6x36 pixel grid. Each pixel can be On or Off. The grid supports input as a sequence of pixel positions to be turned On. Pixels are labeled A0 (top-left) to F35 (bottom-right), where letters represent rows (A-F) and numbers represent columns (0-35). The application should also store a sequence of views in memory.
-
-* Enter a view as a sequence of pixels and save it in memory
-* Print all views stored in memory
-* Clear the memory
+### Intro
+- Maintaining modularity for future extensions
+- System design principles
+- Bitmap display systems
+- Memory management by using Flyweight pattern for reserved characters
+- TDD
 
  <!-- headings -->
  <a id="item2"></a>
@@ -95,6 +102,10 @@ Commands:
     go test -v ./...
 ```
 
+
+ <!-- headings -->
+ <a id="item6.1"></a>
+## Implementation
  <!-- headings -->
  <a id="item7"></a>
 

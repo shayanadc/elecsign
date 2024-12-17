@@ -1,8 +1,9 @@
 package view
 
 import (
-	"elecsign/internal/transformer"
 	"testing"
+
+	"elecsign/internal/transformer"
 )
 
 func TestViews_TurnOn(t *testing.T) {

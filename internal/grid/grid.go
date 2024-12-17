@@ -1,8 +1,9 @@
 package grid
 
 import (
-	"elecsign/internal/transformer"
 	"fmt"
+
+	"elecsign/internal/transformer"
 )
 
 const (

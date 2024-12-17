@@ -10,6 +10,12 @@ const (
 	GridViewHeight = 6  // Set your desired height
 )
 
+type View interface {
+	IsOn(transformer.Coordinate) bool
+	Get() grid.Grid
+	TurnOn([]transformer.Coordinate)
+}
+
 type GridView struct {
 	data grid.Grid
 }
