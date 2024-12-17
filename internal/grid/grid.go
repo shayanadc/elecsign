@@ -6,11 +6,12 @@ import (
 )
 
 const (
-	byteSize = 8
+	byteSize     = 8
+	gridDataSize = 27 // 27 bytes = (6 rows * 36 columns) / 8 bits rounded up
 )
 
 type Grid struct {
-	Data          [27]byte // 27 bytes = (6 rows * 36 columns) / 8 bits rounded up
+	Data          [gridDataSize]byte
 	Width, Height int
 }
 
@@ -18,7 +19,7 @@ func NewGrid(height, width int) *Grid {
 	return &Grid{
 		Height: height,
 		Width:  width,
-		Data:   [27]byte{},
+		Data:   [gridDataSize]byte{},
 	}
 }
 
@@ -38,7 +39,7 @@ func (g *Grid) TurnOn(coord transformer.Coordinate) error {
 
 	// Calculate bit position from right to left (7 to 0)
 	// For bit position 3, we want 00001000
-	g.Data[byteIndex] |= (1 << (7 - bitIndex))
+	g.Data[byteIndex] |= (1 << ((byteSize - 1) - bitIndex))
 
 	return nil
 }

@@ -6,7 +6,7 @@ import (
 )
 
 type View interface {
-	IsOn(c transformer.Coordinate) bool
+	IsOn(transformer.Coordinate) bool
 	Get() grid.Grid
 	TurnOn([]transformer.Coordinate)
 }
