@@ -39,7 +39,10 @@ func TestConsoleRenderer_Render(t *testing.T) {
 			view := view.NewView()
 
 			// Create transformer and transform input
-			transformer, _ := transformer.NewTransformer("character")
+			transformer, err := transformer.NewTransformer("character")
+			if err != nil {
+				t.Fatalf("failed to create transformer: %v", err)
+			}
 			coordinates := transformer.Transform(tt.input, 0)
 			view.TurnOn(coordinates)
 			display.AddView(view)
@@ -49,28 +52,32 @@ func TestConsoleRenderer_Render(t *testing.T) {
 			old := os.Stdout
 			r, w, _ := os.Pipe()
 			os.Stdout = w
+			defer func() { os.Stdout = old }() // Restore stdout after the test
 
 			// Show display
 			display.Show()
 
-			// Restore stdout
+			// Close the writer and copy the output
 			w.Close()
-			os.Stdout = old
 			io.Copy(&buf, r)
 
 			// Compare output
 			output := strings.Split(strings.TrimRight(buf.String(), "\n"), "\n")
-
-			if len(output) != len(tt.expected) {
-				t.Errorf("Expected %d lines, got %d", len(tt.expected), len(output))
-				return
-			}
-
-			for i, expectedLine := range tt.expected {
-				if output[i] != expectedLine {
-					t.Errorf("Line %d:\nexpected: %q\ngot:      %q", i, expectedLine, output[i])
-				}
-			}
+			compareOutput(t, output, tt.expected)
 		})
+	}
+}
+
+// compareOutput checks if the actual output matches the expected output
+func compareOutput(t *testing.T, output, expected []string) {
+	if len(output) != len(expected) {
+		t.Errorf("Expected %d lines, got %d", len(expected), len(output))
+		return
+	}
+
+	for i, expectedLine := range expected {
+		if output[i] != expectedLine {
+			t.Errorf("Line %d:\nexpected: %q\ngot:      %q", i, expectedLine, output[i])
+		}
 	}
 }
