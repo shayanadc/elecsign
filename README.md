@@ -30,6 +30,7 @@ Implement an application simulating an electronic sign with a 6x36 pixel grid. E
  <!-- headings -->
  <a id="item1"></a>
 ### Intro
+The challenges of this application to display all stored views and managing the memory efficiently.
 - Maintaining modularity for future extensions
 - System design principles
 - Bitmap display systems
