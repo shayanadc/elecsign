@@ -10,9 +10,7 @@ import (
 	"strings"
 )
 
-func RunCLI() {
-	renderer := &display.ConsoleRenderer{}
-	display := display.NewConsoleDisplay(renderer)
+func RunCLI(display display.Display) {
 
 	fmt.Println("Electronic Sign CLI")
 	fmt.Println("Commands:")
@@ -51,7 +49,7 @@ func RunCLI() {
 	}
 }
 
-func handleAddCommand(args []string, display *display.ConsoleDisplay) {
+func handleAddCommand(args []string, display display.Display) {
 	if len(args) < 2 {
 		fmt.Println("Usage: add <type> <text>")
 		fmt.Println("Types: pixel, character")
@@ -59,29 +57,23 @@ func handleAddCommand(args []string, display *display.ConsoleDisplay) {
 	}
 
 	inputType := args[0]
-	if inputType != "pixel" && inputType != "character" {
-		fmt.Println("Invalid type. Use 'pixel' or 'character'")
-		return
-	}
-
-	text := strings.Join(args[1:], " ")
-	transformerType := transformer.TransformerType(inputType)
-
-	// Call NewTransformer directly from the transformer package
-	transformerInstance, err := transformer.NewTransformer(transformerType) // This line is incorrect
+	transformerInstance, err := transformer.NewTransformerFromInput(inputType)
 	if err != nil {
 		fmt.Printf("Error creating transformer: %v\n", err)
 		return
 	}
 
+	text := strings.Join(args[1:], " ")
+
+	coordinates := transformerInstance.Transform(text, 0)
+
 	view := view.NewView()
-	coordinates := transformerInstance.Transform(text)
 	view.TurnOn(coordinates)
 	display.AddView(view)
-	fmt.Printf("View added with %s transformer\n", transformerType)
+	fmt.Printf("View added with %s transformer\n", inputType)
 }
 
-func handleShowCommand(display *display.ConsoleDisplay) {
+func handleShowCommand(display display.Display) {
 	fmt.Println("Displaying all views:")
 	fmt.Println(strings.Repeat("-", 36))
 	display.Show()
@@ -89,7 +81,7 @@ func handleShowCommand(display *display.ConsoleDisplay) {
 	display.Clear()
 }
 
-func handleClearCommand(display *display.ConsoleDisplay) {
+func handleClearCommand(display display.Display) {
 	display.Clear()
 	fmt.Println("All views cleared")
 }
