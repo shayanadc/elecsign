@@ -2,7 +2,6 @@ package transformer
 
 import "fmt"
 
-// Define specific error variables
 var (
 	ErrInvalidTransformerType = fmt.Errorf("invalid transformer type")
 )

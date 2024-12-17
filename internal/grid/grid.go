@@ -1,10 +1,13 @@
 package grid
 
 import (
+	"errors"
 	"fmt"
 
 	"elecsign/internal/transformer"
 )
+
+var ErrInvalidCoordinate = errors.New("invalid coordinate")
 
 const (
 	byteSize     = 8
@@ -31,7 +34,10 @@ func (g *Grid) isValidCoordinate(coord transformer.Coordinate) bool {
 
 func (g *Grid) TurnOn(coord transformer.Coordinate) error {
 	if !g.isValidCoordinate(coord) {
-		return fmt.Errorf("invalid coordinate: row=%d, col=%d", coord.RowIndex, coord.ColumnIndex)
+		return fmt.Errorf("%w: row=%d, col=%d",
+			ErrInvalidCoordinate,
+			coord.RowIndex,
+			coord.ColumnIndex)
 	}
 
 	position := g.calculatePosition(coord)
@@ -52,7 +58,10 @@ func (g *Grid) calculatePosition(coord transformer.Coordinate) int {
 
 func (g *Grid) IsOn(coord transformer.Coordinate) (bool, error) {
 	if !g.isValidCoordinate(coord) {
-		return false, fmt.Errorf("invalid coordinate: row=%d, col=%d", coord.RowIndex, coord.ColumnIndex)
+		return false, fmt.Errorf("%w: row=%d, col=%d",
+			ErrInvalidCoordinate,
+			coord.RowIndex,
+			coord.ColumnIndex)
 	}
 
 	position := g.calculatePosition(coord)
