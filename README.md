@@ -198,11 +198,11 @@ The View implementation entity to keep all user input coordinates and represent 
 
 ##### Character Transformer
 
-The Character Transformer is a specialized implementation of the Transformer interface that handles predefined character patterns (A-Z, 0-9) by maintaining a mapping of characters to their pixel sequences.
+The Character Transformer is a specialized implementation of the Transformer interface that handles predefined character patterns (A-Z, 0-9) by maintaining a mapping of characters to their pixel coordinates.
 
 ```
 // Example pattern for letter 'A':
-// A2A3B1B4C0C1C2C3C4D0D4E0E4F0F4
+// 02,03,11,14,20,21,22,23,24,30,34,40,44,50,54,60,61,62,63,64
 //
 // Visual representation:
 //   * *    
