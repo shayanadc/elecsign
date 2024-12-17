@@ -217,6 +217,7 @@ The Character Transformer is a specialized implementation of the Transformer int
 
 ```
 // Example pattern for letter 'A':
+//  
 // 02,03,11,14,20,21,22,23,24,30,34,40,44,50,54,60,61,62,63,64
 //
 // Visual representation:
