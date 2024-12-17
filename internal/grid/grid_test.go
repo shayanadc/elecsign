@@ -81,7 +81,7 @@ func TestGrid_IsOn(t *testing.T) {
 		{
 			name: "pixel is on",
 			setup: func(g *Grid) {
-				g.TurnOn(transformer.Coordinate{RowIndex: 2, ColumnIndex: 3})
+				_ = g.TurnOn(transformer.Coordinate{RowIndex: 2, ColumnIndex: 3})
 			},
 			coord:   transformer.Coordinate{RowIndex: 2, ColumnIndex: 3},
 			want:    true,
@@ -111,8 +111,8 @@ func TestGrid_IsOn(t *testing.T) {
 		{
 			name: "multiple pixels on",
 			setup: func(g *Grid) {
-				g.TurnOn(transformer.Coordinate{RowIndex: 0, ColumnIndex: 0})
-				g.TurnOn(transformer.Coordinate{RowIndex: 0, ColumnIndex: 1})
+				_ = g.TurnOn(transformer.Coordinate{RowIndex: 0, ColumnIndex: 0})
+				_ = g.TurnOn(transformer.Coordinate{RowIndex: 0, ColumnIndex: 1})
 			},
 			coord:   transformer.Coordinate{RowIndex: 0, ColumnIndex: 1},
 			want:    true,

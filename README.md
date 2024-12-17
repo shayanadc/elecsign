@@ -1,14 +1,24 @@
 # Electronic Sign Application
-### Problem
-Implement an application simulating an electronic sign with a 6x36 pixel grid. Each pixel can be On or Off. The grid supports input as a sequence of pixel positions to be turned On. Pixels are labeled A0 (top-left) to F35 (bottom-right), where letters represent rows (A-F) and numbers represent columns (0-35). The application should also store a sequence of views in memory.
+
+### Intro
+Imagine you have a digital bulletin board, like the ones you might see at a train station or sports stadium.
+
+This board is like a grid of tiny light bulbs - 6 rows (labeled A to F) and 36 columns (numbered 0 to 35). Each bulb can be either on or off.
+
+The program works like this:
+Think of it like giving directions to turn on specific lights:
+When you type something like "A1", you're saying "turn on the light in row A, column 1"
+
+The program does three main things:
+1. Takes input instructions (like "A2B12C34")
+2. Figures out which lights to turn on (like a translator)
+3. Shows you the result using stars (*) for lit bulbs and spaces for unlit ones
+It's like having a photo album:
 
 
-* Enter a view as a sequence of pixels and save it in memory
-* Print all views stored in memory
-* Clear the memory
 
  **Table of content:**
- - [Intro](#item1)
+ - [Challenges](#item1)
  - [Usage](#item2)
  - [Installation](#item3)
     - [Build](#item4)
@@ -29,7 +39,7 @@ Implement an application simulating an electronic sign with a 6x36 pixel grid. E
 
  <!-- headings -->
  <a id="item1"></a>
-### Intro
+### Challenges
 The challenges of this application to display all stored views and managing the memory efficiently.
 - Maintaining modularity for future extensions
 - System design principles
@@ -107,6 +117,12 @@ Commands:
  <!-- headings -->
  <a id="item6.1"></a>
 ## Implementation
+
+
+* Enter a view as a sequence of pixels and save it in memory
+* Print all views stored in memory
+* Clear the memory
+
  <!-- headings -->
  <a id="item7"></a>
 
@@ -141,8 +157,8 @@ Using byte: 1 byte (1 bit per pixel)
  <a id="item9"></a>
 
 ### Core Entities
-1. <b>Display</b>: Manages the visual representation (atm it only supports console)
-2. <b>Grid</b>: Represents the physical structure of the sign from memory
+1. <b>Display</b>: Manages the visual representation (it only supports console interface)
+2. <b>Grid</b>: Represents the physical structure of the sign in memory
 3. <b>View</b>: Represents a single displayable pattern
 4. <b>Transformer</b>: Converts input into displayable patterns (indexes of bytes and bits)
 
@@ -173,9 +189,9 @@ The implementation uses bit-level operations to efficiently store and retrieve p
 // byteIndex = 77 / 8 = 9
 // bitIndex = 77 % 8 = 5
 // 
-// Byte at index 9:  1 0 1 1 0 1 0 0
+// Byte at index 9:  0 0 1 0 0 1 0 0
 // Mask (bit 5):     0 0 0 0 1 0 0 0
-// Result:           0 0 0 0 1 0 0 0
+// Result:           0 0 1 0 1 1 0 0
 ```
  <!-- headings -->
  <a id="item12"></a>
@@ -184,25 +200,25 @@ The implementation uses bit-level operations to efficiently store and retrieve p
 
 The View implementation entity to keep all user input coordinates and represent them
 ```
-// Memory representation for "A0B12C5":
+// Memory representation for "A0B0F35":
 // View 1:
 // Byte 0: 10000000 (A0)
 // Byte 1: 00000000
-// Byte 2: 00000100 (B12)
-// Byte 3: 00100000 (C5)
+// Byte 4: 00000100 (B0)
 // ... remaining bytes
-// Byte 26: 00100000 (F35)
+// Byte 26: 00000001 (F35)
 ```
  <!-- headings -->
  <a id="item13"></a>
 
 ##### Character Transformer
 
-The Character Transformer is a specialized implementation of the Transformer interface that handles predefined character patterns (A-Z, 0-9) by maintaining a mapping of characters to their pixel sequences.
+The Character Transformer is a specialized implementation of the Transformer interface that handles predefined character patterns (A-Z, 0-9) by maintaining a mapping of characters to their pixel coordinates.
 
 ```
 // Example pattern for letter 'A':
-// A2A3B1B4C0C1C2C3C4D0D4E0E4F0F4
+//  
+// 02,03,11,14,20,21,22,23,24,30,34,40,44,50,54,60,61,62,63,64
 //
 // Visual representation:
 //   * *    
@@ -219,6 +235,7 @@ The Character Transformer is a specialized implementation of the Transformer int
 ##### Display
 The Console Display entity is responsible for rendering the 6x36 pixel grid as ASCII in the terminal, where (*) represents ON pixels and spaces represent OFF pixels.
 
+Instead of creating new strings for each modification, ```strings.Builder``` maintains a single growing buffer. By pre-allocating the exact space needed (grid.Height * (grid.Width + 1)), it avoids multiple reallocations during the rendering process.
 ``` 
 The Renderable interface allows our application to support multiple display types (console, LED matrix, LCD, etc.) through a common rendering contract.
 ```
@@ -255,4 +272,4 @@ electronic-sign/
  <a id="item17"></a>
 
 ### Fault Tolerance
-The application implements multiple layers of fault tolerance to ensure graceful handling of invalid inputs, out-of-bounds conditions.
+If you make a mistake (like typing "G1" when there's no row G), the program simply ignores it and continues with the valid instructions, just like a GPS recalculating when you make a wrong turn.

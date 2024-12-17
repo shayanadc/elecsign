@@ -59,7 +59,7 @@ func TestConsoleRenderer_Render(t *testing.T) {
 
 			// Close the writer and copy the output
 			w.Close()
-			io.Copy(&buf, r)
+			_, _ = io.Copy(&buf, r)
 
 			// Compare output
 			output := strings.Split(strings.TrimRight(buf.String(), "\n"), "\n")
@@ -77,7 +77,7 @@ func compareOutput(t *testing.T, output, expected []string) {
 
 	for i, expectedLine := range expected {
 		if output[i] != expectedLine {
-			t.Errorf("Line %d:\nexpected: %q\ngot:      %q", i, expectedLine, output[i])
+			t.Errorf("Line %d:\nexpected: %q\ngot: %q", i, expectedLine, output[i])
 		}
 	}
 }
