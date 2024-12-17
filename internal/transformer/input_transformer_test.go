@@ -59,7 +59,7 @@ func TestInputTransformer_Transform(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := transformer.Transform(tt.input)
+			got := transformer.Transform(tt.input, 0)
 			if !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Transform(%q) = %+v; want %+v",
 					tt.input, got, tt.want)

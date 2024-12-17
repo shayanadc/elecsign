@@ -3,7 +3,7 @@ package transformer
 import "fmt"
 
 type Transformer interface {
-	Transform(input string) []Coordinate
+	Transform(input string, offset int) []Coordinate
 }
 
 // Define the TransformerType type
@@ -28,4 +28,11 @@ func NewTransformer(transformType TransformerType) (Transformer, error) {
 	default:
 		return nil, fmt.Errorf("unknown transformer type: %s", transformType)
 	}
+}
+
+// NewTransformerFromInput creates a new transformer based on the input type
+func NewTransformerFromInput(inputType string) (Transformer, error) {
+	transformerType := TransformerType(inputType)
+
+	return NewTransformer(transformerType)
 }

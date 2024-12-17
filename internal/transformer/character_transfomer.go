@@ -1,5 +1,7 @@
 package transformer
 
+const offset = 6
+
 type CharacterTransformer struct {
 	InputTransformer
 	characterPatterns map[rune]string
@@ -17,11 +19,11 @@ func NewCharacterTransformer() *CharacterTransformer {
 			'2': "A1A2A3B4C3D2E1F1F2F3F4",
 			'3': "A1A2A3B4C2C3D4E4F1F2F3",
 		},
-		characterWidth: 6,
+		characterWidth: offset,
 	}
 }
 
-func (t *CharacterTransformer) Transform(input string) []Coordinate {
+func (t *CharacterTransformer) Transform(input string, offset int) []Coordinate {
 	if input == "" {
 		return []Coordinate{}
 	}
@@ -35,19 +37,8 @@ func (t *CharacterTransformer) Transform(input string) []Coordinate {
 			offset := i * t.characterWidth
 
 			// Transform the pattern using the base InputTransformer
-			baseCoordinates := t.InputTransformer.Transform(pattern)
-
-			// Apply offset to each coordinate
-			for _, coord := range baseCoordinates {
-				// Only add if the shifted coordinate is within bounds
-				shiftedColumn := coord.ColumnIndex + offset
-				if shiftedColumn < t.maxColumn {
-					allCoordinates = append(allCoordinates, Coordinate{
-						RowIndex:    coord.RowIndex,
-						ColumnIndex: shiftedColumn,
-					})
-				}
-			}
+			baseCoordinates := t.InputTransformer.Transform(pattern, offset)
+			allCoordinates = append(allCoordinates, baseCoordinates...)
 		}
 	}
 
