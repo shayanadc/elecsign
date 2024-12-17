@@ -2,28 +2,110 @@ package transformer
 
 const offset = 6
 
+// CharacterPattern represents the flyweight object
+type CharacterPattern struct {
+	Coordinates []Coordinate
+}
+
+// CharacterPatternFactory manages the flyweight objects
+type CharacterPatternFactory struct {
+	patterns map[rune]CharacterPattern
+}
+
+func NewCharacterPatternFactory() *CharacterPatternFactory {
+	factory := &CharacterPatternFactory{
+		patterns: make(map[rune]CharacterPattern),
+	}
+	factory.initializePatterns()
+	return factory
+}
+
+// Flyweight factory method to initialize patterns
+func (f *CharacterPatternFactory) initializePatterns() {
+	f.patterns['A'] = CharacterPattern{
+		Coordinates: []Coordinate{
+			{RowIndex: 0, ColumnIndex: 2}, {RowIndex: 0, ColumnIndex: 3},
+			{RowIndex: 1, ColumnIndex: 1}, {RowIndex: 1, ColumnIndex: 4},
+			{RowIndex: 2, ColumnIndex: 0}, {RowIndex: 2, ColumnIndex: 1},
+			{RowIndex: 2, ColumnIndex: 2}, {RowIndex: 2, ColumnIndex: 3},
+			{RowIndex: 2, ColumnIndex: 4}, {RowIndex: 3, ColumnIndex: 0},
+			{RowIndex: 3, ColumnIndex: 4}, {RowIndex: 4, ColumnIndex: 0},
+			{RowIndex: 4, ColumnIndex: 4}, {RowIndex: 5, ColumnIndex: 0},
+			{RowIndex: 5, ColumnIndex: 4},
+		},
+	}
+
+	f.patterns['B'] = CharacterPattern{
+		Coordinates: []Coordinate{
+			{RowIndex: 0, ColumnIndex: 0}, {RowIndex: 0, ColumnIndex: 1},
+			{RowIndex: 0, ColumnIndex: 2}, {RowIndex: 0, ColumnIndex: 3},
+			{RowIndex: 1, ColumnIndex: 0}, {RowIndex: 1, ColumnIndex: 4},
+			{RowIndex: 2, ColumnIndex: 0}, {RowIndex: 2, ColumnIndex: 1},
+			{RowIndex: 2, ColumnIndex: 2}, {RowIndex: 2, ColumnIndex: 3},
+			{RowIndex: 3, ColumnIndex: 0}, {RowIndex: 3, ColumnIndex: 4},
+			{RowIndex: 4, ColumnIndex: 0}, {RowIndex: 4, ColumnIndex: 4},
+			{RowIndex: 5, ColumnIndex: 0}, {RowIndex: 5, ColumnIndex: 1},
+			{RowIndex: 5, ColumnIndex: 2}, {RowIndex: 5, ColumnIndex: 3},
+		},
+	}
+
+	f.patterns['C'] = CharacterPattern{
+		Coordinates: []Coordinate{
+			{RowIndex: 0, ColumnIndex: 1}, {RowIndex: 0, ColumnIndex: 2},
+			{RowIndex: 0, ColumnIndex: 3}, {RowIndex: 1, ColumnIndex: 0},
+			{RowIndex: 1, ColumnIndex: 4}, {RowIndex: 2, ColumnIndex: 0},
+			{RowIndex: 3, ColumnIndex: 0}, {RowIndex: 4, ColumnIndex: 0},
+			{RowIndex: 4, ColumnIndex: 4}, {RowIndex: 5, ColumnIndex: 1},
+			{RowIndex: 5, ColumnIndex: 2}, {RowIndex: 5, ColumnIndex: 3},
+		},
+	}
+
+	f.patterns['1'] = CharacterPattern{
+		Coordinates: []Coordinate{
+			{RowIndex: 0, ColumnIndex: 2}, {RowIndex: 1, ColumnIndex: 1},
+			{RowIndex: 1, ColumnIndex: 2}, {RowIndex: 2, ColumnIndex: 2},
+			{RowIndex: 3, ColumnIndex: 2}, {RowIndex: 4, ColumnIndex: 2},
+			{RowIndex: 5, ColumnIndex: 2},
+		},
+	}
+
+	f.patterns['2'] = CharacterPattern{
+		Coordinates: []Coordinate{
+			{RowIndex: 0, ColumnIndex: 1}, {RowIndex: 0, ColumnIndex: 2},
+			{RowIndex: 0, ColumnIndex: 3}, {RowIndex: 1, ColumnIndex: 4},
+			{RowIndex: 2, ColumnIndex: 3}, {RowIndex: 3, ColumnIndex: 2},
+			{RowIndex: 4, ColumnIndex: 1}, {RowIndex: 5, ColumnIndex: 1},
+			{RowIndex: 5, ColumnIndex: 2}, {RowIndex: 5, ColumnIndex: 3},
+			{RowIndex: 5, ColumnIndex: 4},
+		},
+	}
+
+	f.patterns['3'] = CharacterPattern{
+		Coordinates: []Coordinate{
+			{RowIndex: 0, ColumnIndex: 1}, {RowIndex: 0, ColumnIndex: 2},
+			{RowIndex: 0, ColumnIndex: 3}, {RowIndex: 1, ColumnIndex: 4},
+			{RowIndex: 2, ColumnIndex: 2}, {RowIndex: 2, ColumnIndex: 3},
+			{RowIndex: 3, ColumnIndex: 4}, {RowIndex: 4, ColumnIndex: 4},
+			{RowIndex: 5, ColumnIndex: 1}, {RowIndex: 5, ColumnIndex: 2},
+			{RowIndex: 5, ColumnIndex: 3},
+		},
+	}
+}
+
+// CharacterTransformer uses the flyweight factory
 type CharacterTransformer struct {
-	InputTransformer
-	characterPatterns map[rune]string
-	characterWidth    int
+	patternFactory *CharacterPatternFactory
+	characterWidth int
 }
 
 func NewCharacterTransformer() *CharacterTransformer {
 	return &CharacterTransformer{
-		InputTransformer: *NewInputTransformer(),
-		characterPatterns: map[rune]string{
-			'A': "A2A3B1B4C0C1C2C3C4D0D4E0E4F0F4",
-			'B': "A0A1A2A3B0B4C0C1C2C3D0D4E0E4F0F1F2F3",
-			'C': "A1A2A3B0B4C0D0E0E4F1F2F3",
-			'1': "A2B1B2C2D2E2F2",
-			'2': "A1A2A3B4C3D2E1F1F2F3F4",
-			'3': "A1A2A3B4C2C3D4E4F1F2F3",
-		},
+		patternFactory: NewCharacterPatternFactory(),
 		characterWidth: offset,
 	}
 }
 
-func (t *CharacterTransformer) Transform(input string, offset int) []Coordinate {
+func (t *CharacterTransformer) Transform(input string, startOffset int) []Coordinate {
 	if input == "" {
 		return []Coordinate{}
 	}
@@ -32,13 +114,18 @@ func (t *CharacterTransformer) Transform(input string, offset int) []Coordinate 
 
 	// Process each character in the input string
 	for i, char := range input {
-		if pattern, exists := t.characterPatterns[char]; exists {
+		if pattern, exists := t.patternFactory.patterns[char]; exists {
 			// Calculate offset for this character
-			offset := i * t.characterWidth
+			charOffset := i * t.characterWidth
 
-			// Transform the pattern using the base InputTransformer
-			baseCoordinates := t.InputTransformer.Transform(pattern, offset)
-			allCoordinates = append(allCoordinates, baseCoordinates...)
+			// Apply offset to each coordinate
+			for _, coord := range pattern.Coordinates {
+				newCoord := Coordinate{
+					RowIndex:    coord.RowIndex,
+					ColumnIndex: coord.ColumnIndex + charOffset + startOffset,
+				}
+				allCoordinates = append(allCoordinates, newCoord)
+			}
 		}
 	}
 
