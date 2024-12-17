@@ -1,8 +1,9 @@
 package grid
 
 import (
-	"elecsign/internal/transformer"
 	"testing"
+
+	"elecsign/internal/transformer"
 )
 
 func TestGrid_TurnOn(t *testing.T) {

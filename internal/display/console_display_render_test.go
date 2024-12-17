@@ -2,12 +2,13 @@ package display
 
 import (
 	"bytes"
-	"elecsign/internal/transformer"
-	"elecsign/internal/view"
 	"io"
 	"os"
 	"strings"
 	"testing"
+
+	"elecsign/internal/transformer"
+	"elecsign/internal/view"
 )
 
 func TestConsoleRenderer_Render(t *testing.T) {

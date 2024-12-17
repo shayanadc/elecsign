@@ -2,6 +2,11 @@ package transformer
 
 import "fmt"
 
+// Define specific error variables
+var (
+	ErrInvalidTransformerType = fmt.Errorf("invalid transformer type")
+)
+
 type Transformer interface {
 	Transform(input string, offset int) []Coordinate
 }
@@ -26,13 +31,15 @@ func NewTransformer(transformType TransformerType) (Transformer, error) {
 	case CharacterType:
 		return NewCharacterTransformer(), nil
 	default:
-		return nil, fmt.Errorf("unknown transformer type: %s", transformType)
+		return nil, ErrInvalidTransformerType
 	}
 }
 
 // NewTransformerFromInput creates a new transformer based on the input type
 func NewTransformerFromInput(inputType string) (Transformer, error) {
 	transformerType := TransformerType(inputType)
-
+	if transformerType != PixelType && transformerType != CharacterType {
+		return nil, ErrInvalidTransformerType
+	}
 	return NewTransformer(transformerType)
 }

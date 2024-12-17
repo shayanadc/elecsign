@@ -5,6 +5,7 @@ import (
 	"elecsign/internal/display"
 	"elecsign/internal/transformer"
 	"elecsign/internal/view"
+	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -58,8 +59,8 @@ func handleAddCommand(args []string, display display.Display) {
 
 	inputType := args[0]
 	transformerInstance, err := transformer.NewTransformerFromInput(inputType)
-	if err != nil {
-		fmt.Printf("Error creating transformer: %v\n", err)
+	if errors.Is(err, transformer.ErrInvalidTransformerType) {
+		fmt.Println("Invalid transformer type provided")
 		return
 	}
 
