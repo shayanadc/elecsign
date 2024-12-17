@@ -141,8 +141,8 @@ Using byte: 1 byte (1 bit per pixel)
  <a id="item9"></a>
 
 ### Core Entities
-1. <b>Display</b>: Manages the visual representation (atm it only supports console)
-2. <b>Grid</b>: Represents the physical structure of the sign from memory
+1. <b>Display</b>: Manages the visual representation (it only supports console interface)
+2. <b>Grid</b>: Represents the physical structure of the sign in memory
 3. <b>View</b>: Represents a single displayable pattern
 4. <b>Transformer</b>: Converts input into displayable patterns (indexes of bytes and bits)
 
@@ -173,9 +173,9 @@ The implementation uses bit-level operations to efficiently store and retrieve p
 // byteIndex = 77 / 8 = 9
 // bitIndex = 77 % 8 = 5
 // 
-// Byte at index 9:  1 0 1 1 0 1 0 0
+// Byte at index 9:  0 0 1 0 0 1 0 0
 // Mask (bit 5):     0 0 0 0 1 0 0 0
-// Result:           0 0 0 0 1 0 0 0
+// Result:           0 0 1 0 1 1 0 0
 ```
  <!-- headings -->
  <a id="item12"></a>
@@ -184,14 +184,13 @@ The implementation uses bit-level operations to efficiently store and retrieve p
 
 The View implementation entity to keep all user input coordinates and represent them
 ```
-// Memory representation for "A0B12C5":
+// Memory representation for "A0B0F35":
 // View 1:
 // Byte 0: 10000000 (A0)
 // Byte 1: 00000000
-// Byte 2: 00000100 (B12)
-// Byte 3: 00100000 (C5)
+// Byte 4: 00000100 (B0)
 // ... remaining bytes
-// Byte 26: 00100000 (F35)
+// Byte 26: 00000001 (F35)
 ```
  <!-- headings -->
  <a id="item13"></a>
