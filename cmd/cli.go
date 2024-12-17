@@ -52,8 +52,7 @@ func RunCLI(display display.Display) {
 
 func handleAddCommand(args []string, display display.Display) {
 	if len(args) < 2 {
-		fmt.Println("Usage: add <type> <text>")
-		fmt.Println("Types: pixel, character")
+		fmt.Println("Usage: add <pixel, character> <text>")
 		return
 	}
 
@@ -76,10 +75,9 @@ func handleAddCommand(args []string, display display.Display) {
 
 func handleShowCommand(display display.Display) {
 	fmt.Println("Displaying all views:")
-	fmt.Println(strings.Repeat("-", 36))
 	display.Show()
-	fmt.Println(strings.Repeat("-", 36))
 	display.Clear()
+	fmt.Println("All views cleared")
 }
 
 func handleClearCommand(display display.Display) {
