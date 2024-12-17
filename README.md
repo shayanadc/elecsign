@@ -1,11 +1,38 @@
 # Electronic Sign Application
 
+ **Table of content:**
+ - [Problem](#item1)
+ - [Usage](#item2)
+ - [Installation](#item3)
+ - [Build](#item4)
+ - [Docker](#item5)
+ - [Test](#item6)
+ - [Data Structure](#item7)
+ - [Flow](#item8)
+ - [Entities](#item9)
+ - [Transformation](#item10)
+ - [Storage](#item11)
+ - [View](#item12)
+ - [Characters](#item13)
+ - [Display](#item14)
+ - [Memory Clean Up](#item15)
+ - [Project Structure](#item16)
+ - [Fault Tolerance](#item17)
+
+ <!-- headings -->
+ <a id="item1"></a>
+ 
 ### Problem
 Implement an application simulating an electronic sign with a 6x36 pixel grid. Each pixel can be On or Off. The grid supports input as a sequence of pixel positions to be turned On. Pixels are labeled A0 (top-left) to F35 (bottom-right), where letters represent rows (A-F) and numbers represent columns (0-35). The application should also store a sequence of views in memory.
 
 * Enter a view as a sequence of pixels and save it in memory
 * Print all views stored in memory
 * Clear the memory
+
+ <!-- headings -->
+ <a id="item2"></a>
+ 
+
 ### Usage
 ```
 Electronic Sign CLI
@@ -27,6 +54,10 @@ Commands:
 
 >>> Displaying all views:
 
+ <!-- headings -->
+ <a id="item3"></a>
+ 
+
 ### Installation Guide
 
 + Manual Installation (Go)
@@ -35,6 +66,10 @@ Commands:
     - Clone the repository
     - Build and run the application
 
+ <!-- headings -->
+ <a id="item4"></a>
+ 
+
 ### Build and run the application
 
 ```    
@@ -42,6 +77,9 @@ Commands:
     
     ./elecsign
 ```
+ <!-- headings -->
+ <a id="item5"></a>
+
 
 ### Docker Installation
 ```
@@ -49,16 +87,22 @@ Commands:
     docker run -it elecsign
     docker run -it --rm elecsign
 ```
+ <!-- headings -->
+ <a id="item6"></a>
 
 ### Test
 ```
     go test -v ./...
 ```
 
+ <!-- headings -->
+ <a id="item7"></a>
+
 ### Grid Data Structure
 As the size of array for saving the bitwise (On/Off) is fixed it would be more efficient to take it a fixed array size so, size is known at compile time, allowing for better memory allocation
 - Memory is allocated on the stack rather than the heap, reducing garbage collection overhead.
 - Contiguous memory layout improves cache locality and performance
+
 
 ###### Why bytearray?
 Each pixel needs only 1 bit (on/off)
@@ -69,6 +113,8 @@ Allows bitwise operations for efficient manipulation
 Using bool: 8 bytes (1 byte per pixel)
 Using byte: 1 byte (1 bit per pixel)
 ```
+ <!-- headings -->
+ <a id="item8"></a>
 
 ### Data Flow
 ```
@@ -79,6 +125,8 @@ Using byte: 1 byte (1 bit per pixel)
     Display → Renderer
     Renderer → Console Output
 ```
+ <!-- headings -->
+ <a id="item9"></a>
 
 ### Core Entities
 1. <b>Display</b>: Manages the visual representation (atm it only supports console)
@@ -86,6 +134,8 @@ Using byte: 1 byte (1 bit per pixel)
 3. <b>View</b>: Represents a single displayable pattern
 4. <b>Transformer</b>: Converts input into displayable patterns (indexes of bytes and bits)
 
+ <!-- headings -->
+ <a id="item10"></a>
 
 ##### String to Coordinate Transformation
 
@@ -99,6 +149,8 @@ The algorithm converts user input strings representing pixel coordinates (e.g., 
 // i=4: currentChar='2', segment="B1"
 // i=5: currentChar='C', segment="B12" -> Coordinate{row: 1, col: 12}
 ```
+ <!-- headings -->
+ <a id="item11"></a>
 
 ##### Bit-Level Storage
 
@@ -113,7 +165,11 @@ The implementation uses bit-level operations to efficiently store and retrieve p
 // Mask (bit 5):     0 0 0 0 1 0 0 0
 // Result:           0 0 0 0 1 0 0 0
 ```
-##### View Manager
+ <!-- headings -->
+ <a id="item12"></a>
+
+##### View
+
 The View implementation entity to keep all user input coordinates and represent them
 ```
 // Memory representation for "A0B12C5":
@@ -125,6 +181,8 @@ The View implementation entity to keep all user input coordinates and represent 
 // ... remaining bytes
 // Byte 26: 00100000 (F35)
 ```
+ <!-- headings -->
+ <a id="item13"></a>
 
 ##### Character Transformer
 
@@ -143,12 +201,17 @@ The Character Transformer is a specialized implementation of the Transformer int
 // *     *  
 ```
 
+ <!-- headings -->
+ <a id="item14"></a>
+
 ##### Display
 The Console Display entity is responsible for rendering the 6x36 pixel grid as ASCII in the terminal, where (*) represents ON pixels and spaces represent OFF pixels.
 
 ``` 
 The Renderable interface allows our application to support multiple display types (console, LED matrix, LCD, etc.) through a common rendering contract.
 ```
+ <!-- headings -->
+ <a id="item15"></a>
 
 ### Memory Clean Up
 The display manager cleanup the memory after showing the items (show command). To avoid constantly re allocating memory
@@ -158,8 +221,10 @@ func (v *View) Clear() {
     vm.views = vm.views[:0]  // Reuse underlying array
 }
 ```
+ <!-- headings -->
+ <a id="item16"></a>
 
-### Project structure 
+### Project Structure 
 
 ```
 electronic-sign/
@@ -174,6 +239,8 @@ electronic-sign/
 ├── Dockerfile
 └── docker-compose.yml
 ```
+ <!-- headings -->
+ <a id="item17"></a>
 
 ### Fault Tolerance
 The application implements multiple layers of fault tolerance to ensure graceful handling of invalid inputs, out-of-bounds conditions.
