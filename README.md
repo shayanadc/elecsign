@@ -5,6 +5,7 @@
 + Manual Installation (Go)
     - Install Go (version 1.21 or later)
 ```
+
 # macOS using Homebrew
 
     Install Go (version 1.21 or later)
