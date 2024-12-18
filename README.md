@@ -189,9 +189,9 @@ The implementation uses bit-level operations to efficiently store and retrieve p
 // byteIndex = 77 / 8 = 9
 // bitIndex = 77 % 8 = 5
 // 
-// Byte at index 9:  0 0 1 0 0 1 0 0
-// Mask (bit 5):     0 0 0 0 1 0 0 0
-// Result:           0 0 1 0 1 1 0 0
+// Byte at index 9:  0 0 1 0 0 1 0 0 -- position 3 and 6 were set before
+// Mask (bit 5):     0 0 0 0 1 0 0 0 -- position 5
+// Result:           0 0 1 0 1 1 0 0 -- now position 5, 3, 6 is set
 ```
  <!-- headings -->
  <a id="item12"></a>
