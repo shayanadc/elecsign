@@ -6,8 +6,8 @@ import (
 )
 
 const (
-	GridViewWidth  = 36 // Set your desired width
-	GridViewHeight = 6  // Set your desired height
+	GridViewWidth  = 36
+	GridViewHeight = 6
 )
 
 type View interface {

@@ -45,7 +45,7 @@ func (g *Grid) TurnOn(coord transformer.Coordinate) error {
 	bitIndex := position % byteSize
 
 	// Calculate bit position from right to left (7 to 0)
-	// For bit position 3, we want 00001000
+	// For bit position 3, we want 00010000
 	g.Data[byteIndex] |= (1 << ((byteSize - 1) - bitIndex))
 
 	return nil
