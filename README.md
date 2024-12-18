@@ -134,12 +134,12 @@ As the size of array for saving the bitwise (On/Off) is fixed it would be more e
 
 ###### Why bytearray?
 Each pixel needs only 1 bit (on/off)
-216 pixels can be stored in 27 bytes (216/8 = 27)
+216(6*36) pixels can be stored in 27 bytes (216/8 = 27)
 Allows bitwise operations for efficient manipulation
 
 ```
-Using bool: 8 bytes (1 byte per pixel)
-Using byte: 1 byte (1 bit per pixel)
+Using bool: 8 bytes (1 byte per pixel) - unnecessary memory overhead
+Using byte: 1 byte (1 bit per pixel) - fit within the size of grid
 ```
  <!-- headings -->
  <a id="item8"></a>
@@ -217,7 +217,8 @@ The Character Transformer is a specialized implementation of the Transformer int
 
 ```
 // Example pattern for letter 'A':
-//  
+// It contains the coordinations of the pixels in the grid
+// byte index: 0, bit index: 2 and ...
 // 02,03,11,14,20,21,22,23,24,30,34,40,44,50,54,60,61,62,63,64
 //
 // Visual representation:
