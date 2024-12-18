@@ -30,10 +30,6 @@ func NewInputTransformer() *InputTransformer {
 }
 
 func (t *InputTransformer) Transform(input string, offset int) []Coordinate {
-	if input == "" {
-		return []Coordinate{}
-	}
-
 	coordinates := make([]Coordinate, 0)
 	currentStart := 0
 
@@ -53,11 +49,6 @@ func (t *InputTransformer) Transform(input string, offset int) []Coordinate {
 		}
 	}
 
-	// If no valid coordinates were found, return empty slice
-	if len(coordinates) == 0 {
-		return []Coordinate{}
-	}
-
 	return coordinates
 }
 
@@ -71,16 +62,14 @@ func (t *InputTransformer) parseCoordinate(input string, offset int) (Coordinate
 		return Coordinate{}, fmt.Errorf("invalid row character: %c", row)
 	}
 
-	colStr := input[1:]
-	col, err := strconv.Atoi(colStr)
+	col, err := strconv.Atoi(input[1:])
 	if err != nil {
-		return Coordinate{}, fmt.Errorf("invalid column number: %s", colStr)
+		return Coordinate{}, fmt.Errorf("invalid column number: %s", input[1:])
 	}
-	shiftedColumn := col + offset
 
 	return Coordinate{
 		RowIndex:    int(row - t.minRow),
-		ColumnIndex: shiftedColumn,
+		ColumnIndex: col + offset,
 	}, nil
 }
 

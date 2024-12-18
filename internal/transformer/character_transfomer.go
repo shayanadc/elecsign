@@ -106,11 +106,7 @@ func NewCharacterTransformer() *CharacterTransformer {
 }
 
 func (t *CharacterTransformer) Transform(input string, startOffset int) []Coordinate {
-	if input == "" {
-		return []Coordinate{}
-	}
-
-	var allCoordinates []Coordinate
+	allCoordinates := make([]Coordinate, 0)
 
 	// Process each character in the input string
 	for i, char := range input {
