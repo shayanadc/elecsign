@@ -276,7 +276,6 @@ electronic-sign/
 │   ├── grid/
 │   ├── transformer/
 │   └── view/
-│       └── view.go
 ├── Dockerfile
 └── docker-compose.yml
 ```
