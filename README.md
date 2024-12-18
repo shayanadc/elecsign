@@ -271,4 +271,4 @@ electronic-sign/
  <a id="item17"></a>
 
 ### Fault Tolerance
-If you make a mistake (like typing "G1" when there's no row G), the program simply ignores it and continues with the valid instructions, just like a GPS recalculating when you make a wrong turn.
+If you make a mistake (like typing "G1" when there's no row G), the program simply ignores it and continues with the valid instructions.
