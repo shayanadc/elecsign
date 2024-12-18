@@ -39,7 +39,6 @@ The program does three main things:
  <!-- headings -->
  <a id="item1"></a>
 ### Challenges
-The challenges of this application to display all stored views and managing the memory efficiently.
 - Maintaining modularity for future extensions
 - System design principles
 - Bitmap display systems
