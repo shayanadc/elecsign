@@ -13,7 +13,6 @@ The program does three main things:
 1. Takes input instructions (like "A2B12C34")
 2. Figures out which lights to turn on (like a translator)
 3. Shows you the result using stars (*) for lit bulbs and spaces for unlit ones
-It's like having a photo album:
 
 
 
