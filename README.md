@@ -110,7 +110,12 @@ Commands:
 ```
     go test -v ./...
 ```
+also for benchmark test:
 
+```
+    go test -bench=. -benchmem -cpuprofile cpu.prof -memprofile mem.prof
+
+```
 
  <!-- headings -->
  <a id="item6.1"></a>
