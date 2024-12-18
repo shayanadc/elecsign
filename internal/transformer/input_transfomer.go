@@ -6,10 +6,11 @@ import (
 )
 
 const (
-	minRow    = 'A'
-	maxRow    = 'F'
-	maxColumn = 36
-	endWidth  = '/'
+	minRow        = 'A'
+	maxRow        = 'F'
+	endWidth      = '/'
+	maxColumn     = 36
+	minSignLength = 2
 )
 
 type Coordinate struct {
@@ -30,7 +31,7 @@ func NewInputTransformer() *InputTransformer {
 }
 
 func (t *InputTransformer) Transform(input string, offset int) []Coordinate {
-	coordinates := make([]Coordinate, 0)
+	coordinates := make([]Coordinate, 0, len(input)/2)
 	currentStart := 0
 
 	// Add sentinel character
@@ -53,7 +54,7 @@ func (t *InputTransformer) Transform(input string, offset int) []Coordinate {
 }
 
 func (t *InputTransformer) parseCoordinate(input string, offset int) (Coordinate, error) {
-	if len(input) < 2 {
+	if len(input) < minSignLength {
 		return Coordinate{}, fmt.Errorf("invalid input length: %d", len(input))
 	}
 

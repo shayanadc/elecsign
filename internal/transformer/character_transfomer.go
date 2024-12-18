@@ -14,7 +14,7 @@ type CharacterPatternFactory struct {
 
 func NewCharacterPatternFactory() *CharacterPatternFactory {
 	factory := &CharacterPatternFactory{
-		patterns: make(map[rune]CharacterPattern),
+		patterns: make(map[rune]CharacterPattern, offset),
 	}
 	factory.initializePatterns()
 	return factory
@@ -106,7 +106,7 @@ func NewCharacterTransformer() *CharacterTransformer {
 }
 
 func (t *CharacterTransformer) Transform(input string, startOffset int) []Coordinate {
-	allCoordinates := make([]Coordinate, 0)
+	allCoordinates := make([]Coordinate, 0, len(input)/2)
 
 	// Process each character in the input string
 	for i, char := range input {
