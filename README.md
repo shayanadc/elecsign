@@ -165,7 +165,7 @@ Using byte: 1 byte (1 bit per pixel) - fit within the size of grid
 
 ##### String to Coordinate Transformation
 
-The algorithm converts user input strings representing pixel coordinates (e.g., "A0B12C5") into memory-mapped coordinates for a 6x36 pixel display, achieving O(n) time complexity.
+The algorithm converts user input strings representing pixel coordinates (e.g., "A0B12C5") into memory-mapped coordinates for a 6x36 pixel display, achieving O(n) time complexity. it works with two pointer: first pointer start with the first char and the second pointer move until the next character, then first pointer move to the current index of the array and repeat this unit end of the array
 
 ```
 // Input: "A0B12C5"
@@ -196,7 +196,7 @@ The implementation uses bit-level operations to efficiently store and retrieve p
 
 ##### View
 
-The View implementation entity to keep all user input coordinates and represent them
+The View implementation entity fo keeping all user input coordinates and to represent them
 ```
 // Memory representation for "A0B0F35":
 // View 1:
