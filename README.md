@@ -234,7 +234,7 @@ The Character Transformer is a specialized implementation of the Transformer int
 ##### Display
 The Console Display entity is responsible for rendering the 6x36 pixel grid as ASCII in the terminal, where (*) represents ON pixels and spaces represent OFF pixels.
 
-Instead of creating new strings for each modification, ```strings.Builder``` maintains a single growing buffer. By pre-allocating the exact space needed (grid.Height * (grid.Width + 1)), it avoids multiple reallocations during the rendering process.
+Instead of creating new strings for each modification, ```strings.Builder``` maintains a single growing buffer. By pre-allocating the exact space needed (row * (column + 1)), it avoids multiple reallocations during the rendering process.
 ``` 
 The Renderable interface allows our application to support multiple display types (console, LED matrix, LCD, etc.) through a common rendering contract.
 ```
