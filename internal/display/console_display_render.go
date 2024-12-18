@@ -37,6 +37,7 @@ func (c *ConsoleRenderer) Render(grid grid.Grid) {
 		for col := 0; col < grid.Width; col++ {
 			coord := transformer.Coordinate{RowIndex: row, ColumnIndex: col}
 			if on, _ := grid.IsOn(coord); on {
+				// ignore error since we want to render all on pixels
 				output.WriteByte('*')
 			} else {
 				output.WriteByte(' ')
