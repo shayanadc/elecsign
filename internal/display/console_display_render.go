@@ -10,6 +10,8 @@ import (
 	"elecsign/internal/view"
 )
 
+const initialViewCapacity = 10
+
 type Display interface {
 	Show()
 	AddView(view.View)
@@ -61,7 +63,7 @@ type ConsoleDisplay struct {
 // NewConsoleDisplay creates a new ConsoleDisplay
 func NewConsoleDisplay(r Renderer) *ConsoleDisplay {
 	return &ConsoleDisplay{
-		views:    make([]view.View, 0, 10),
+		views:    make([]view.View, 0, initialViewCapacity),
 		renderer: r,
 	}
 }
