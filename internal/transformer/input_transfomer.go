@@ -6,10 +6,11 @@ import (
 )
 
 const (
-	minRow    = 'A'
-	maxRow    = 'F'
-	maxColumn = 36
-	endWidth  = '/'
+	minRow        = 'A'
+	maxRow        = 'F'
+	endWidth      = '/'
+	maxColumn     = 36
+	minSignLength = 2
 )
 
 type Coordinate struct {
@@ -30,11 +31,7 @@ func NewInputTransformer() *InputTransformer {
 }
 
 func (t *InputTransformer) Transform(input string, offset int) []Coordinate {
-	if input == "" {
-		return []Coordinate{}
-	}
-
-	coordinates := make([]Coordinate, 0)
+	coordinates := make([]Coordinate, 0, len(input)/2)
 	currentStart := 0
 
 	// Add sentinel character
@@ -53,16 +50,11 @@ func (t *InputTransformer) Transform(input string, offset int) []Coordinate {
 		}
 	}
 
-	// If no valid coordinates were found, return empty slice
-	if len(coordinates) == 0 {
-		return []Coordinate{}
-	}
-
 	return coordinates
 }
 
 func (t *InputTransformer) parseCoordinate(input string, offset int) (Coordinate, error) {
-	if len(input) < 2 {
+	if len(input) < minSignLength {
 		return Coordinate{}, fmt.Errorf("invalid input length: %d", len(input))
 	}
 
@@ -71,16 +63,14 @@ func (t *InputTransformer) parseCoordinate(input string, offset int) (Coordinate
 		return Coordinate{}, fmt.Errorf("invalid row character: %c", row)
 	}
 
-	colStr := input[1:]
-	col, err := strconv.Atoi(colStr)
+	col, err := strconv.Atoi(input[1:])
 	if err != nil {
-		return Coordinate{}, fmt.Errorf("invalid column number: %s", colStr)
+		return Coordinate{}, fmt.Errorf("invalid column number: %s", input[1:])
 	}
-	shiftedColumn := col + offset
 
 	return Coordinate{
 		RowIndex:    int(row - t.minRow),
-		ColumnIndex: shiftedColumn,
+		ColumnIndex: col + offset,
 	}, nil
 }
 

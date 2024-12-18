@@ -2,12 +2,15 @@ package display
 
 import (
 	"fmt"
+	"os"
 	"strings"
 
 	"elecsign/internal/grid"
 	"elecsign/internal/transformer"
 	"elecsign/internal/view"
 )
+
+const initialViewCapacity = 10
 
 type Display interface {
 	Show()
@@ -31,11 +34,13 @@ func NewConsoleRenderer() *ConsoleRenderer {
 // Render method to display the grid in a human-readable format
 func (c *ConsoleRenderer) Render(grid grid.Grid) {
 	var output strings.Builder
-	output.Grow(grid.Height * (grid.Width + 1)) // +1 for newline characters
+	output.Grow(grid.Height * (grid.Width + 1))
 
+	coord := transformer.Coordinate{}
 	for row := 0; row < grid.Height; row++ {
+		coord.RowIndex = row
 		for col := 0; col < grid.Width; col++ {
-			coord := transformer.Coordinate{RowIndex: row, ColumnIndex: col}
+			coord.ColumnIndex = col
 			if on, _ := grid.IsOn(coord); on {
 				output.WriteByte('*')
 			} else {
@@ -45,7 +50,8 @@ func (c *ConsoleRenderer) Render(grid grid.Grid) {
 		output.WriteByte('\n')
 	}
 
-	fmt.Println(output.String())
+	// Avoid string allocation from String()
+	fmt.Fprint(os.Stdout, output.String())
 }
 
 // ConsoleDisplay struct to manage views and render them
@@ -57,7 +63,7 @@ type ConsoleDisplay struct {
 // NewConsoleDisplay creates a new ConsoleDisplay
 func NewConsoleDisplay(r Renderer) *ConsoleDisplay {
 	return &ConsoleDisplay{
-		views:    make([]view.View, 0),
+		views:    make([]view.View, 0, initialViewCapacity),
 		renderer: r,
 	}
 }

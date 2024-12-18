@@ -26,10 +26,16 @@ func NewGrid(height, width int) *Grid {
 		Data:   [gridDataSize]byte{},
 	}
 }
+func (g *Grid) IsOn(coord transformer.Coordinate) (bool, error) {
+	if !g.isValidCoordinate(coord) {
+		return false, fmt.Errorf("%w: row=%d, col=%d",
+			ErrInvalidCoordinate,
+			coord.RowIndex,
+			coord.ColumnIndex)
+	}
 
-func (g *Grid) isValidCoordinate(coord transformer.Coordinate) bool {
-	return coord.RowIndex >= 0 && coord.RowIndex < g.Height &&
-		coord.ColumnIndex >= 0 && coord.ColumnIndex < g.Width
+	byteIndex, bitIndex := g.toBitPosition(coord)
+	return g.Data[byteIndex]&(1<<((byteSize-1)-bitIndex)) != 0, nil
 }
 
 func (g *Grid) TurnOn(coord transformer.Coordinate) error {
@@ -40,33 +46,28 @@ func (g *Grid) TurnOn(coord transformer.Coordinate) error {
 			coord.ColumnIndex)
 	}
 
-	position := g.calculatePosition(coord)
-	byteIndex := position / byteSize
-	bitIndex := position % byteSize
+	byteIdx, bitIdx := g.toBitPosition(coord)
 
 	// Calculate bit position from right to left (7 to 0)
 	// For bit position 3, we want 00010000
-	g.Data[byteIndex] |= (1 << ((byteSize - 1) - bitIndex))
+	g.Data[byteIdx] |= (1 << ((byteSize - 1) - bitIdx))
 
 	return nil
 }
 
-func (g *Grid) calculatePosition(coord transformer.Coordinate) int {
+func (g *Grid) absolutePosition(coord transformer.Coordinate) int {
 	// Calculate the absolute position in the grid
 	return (coord.RowIndex * g.Width) + coord.ColumnIndex
 }
 
-func (g *Grid) IsOn(coord transformer.Coordinate) (bool, error) {
-	if !g.isValidCoordinate(coord) {
-		return false, fmt.Errorf("%w: row=%d, col=%d",
-			ErrInvalidCoordinate,
-			coord.RowIndex,
-			coord.ColumnIndex)
-	}
+func (g *Grid) toBitPosition(coord transformer.Coordinate) (byteIndex, bitIndex int) {
+	position := g.absolutePosition(coord)
+	byteIndex = position / byteSize
+	bitIndex = position % byteSize
+	return
+}
 
-	position := g.calculatePosition(coord)
-	byteIndex := position / byteSize
-	bitIndex := position % byteSize
-
-	return g.Data[byteIndex]&(1<<((byteSize-1)-bitIndex)) != 0, nil
+func (g *Grid) isValidCoordinate(coord transformer.Coordinate) bool {
+	return coord.RowIndex >= 0 && coord.RowIndex < g.Height &&
+		coord.ColumnIndex >= 0 && coord.ColumnIndex < g.Width
 }
