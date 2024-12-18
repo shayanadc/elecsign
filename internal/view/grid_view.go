@@ -43,6 +43,7 @@ func (v *GridView) IsOn(c transformer.Coordinate) bool {
 // TurnOn turns on multiple pixels at the given coordinates
 func (v *GridView) TurnOn(coords []transformer.Coordinate) {
 	for _, coord := range coords {
+		// Ignoring error as invalid coordinates need to be ignored (fault tolerance)
 		_ = v.data.TurnOn(coord)
 	}
 }
