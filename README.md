@@ -181,6 +181,14 @@ The algorithm converts user input strings representing pixel coordinates (e.g., 
 ##### Bit-Level Storage
 
 The implementation uses bit-level operations to efficiently store and retrieve pixel states in a byte array, where each pixel's state (on/off) is represented by a single bit.
+
+Mapping Positions: For example, let's map "A0":
+Row A (first row) starts at byte 0, bit 0
+"A0" means the very first switch in the first compartment
+"A7" would be the 8th switch in the first compartment
+"A8" moves to the first switch in the second compartment
+
+but how to change the bit by its position?
 ```
 // For coordinate (2,5):
 // position = 2 * 36 + 5 = 77

@@ -18,7 +18,7 @@ type Coordinate struct {
 type InputTransformer struct {
 	minRow    rune
 	maxRow    rune
-	maxColumn int
+	maxColumn uint8
 }
 
 func NewInputTransformer() *InputTransformer {
@@ -94,5 +94,5 @@ func (t *InputTransformer) isValidRow(char rune) bool {
 }
 
 func (t *InputTransformer) isValidColumn(digit int) bool {
-	return digit >= 0 && digit < t.maxColumn
+	return digit >= 0 && digit < int(t.maxColumn)
 }
