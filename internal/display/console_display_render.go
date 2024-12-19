@@ -5,7 +5,6 @@ import (
 	"os"
 	"strings"
 
-	"elecsign/internal/grid"
 	"elecsign/internal/transformer"
 	"elecsign/internal/view"
 )
@@ -20,7 +19,7 @@ type Display interface {
 
 // Renderer interface for rendering a grid
 type Renderer interface {
-	Render(grid grid.Grid)
+	Render(view view.View)
 }
 
 // ConsoleRenderer struct for rendering grids to the console
@@ -32,16 +31,17 @@ func NewConsoleRenderer() *ConsoleRenderer {
 }
 
 // Render method to display the grid in a human-readable format
-func (c *ConsoleRenderer) Render(grid grid.Grid) {
+func (c *ConsoleRenderer) Render(view view.View) {
 	var output strings.Builder
-	output.Grow(grid.Height * (grid.Width + 1))
+	width, height := view.Dimennsions()
+	output.Grow(height * (width + 1))
 
 	coord := transformer.Coordinate{}
-	for row := 0; row < grid.Height; row++ {
+	for row := 0; row < height; row++ {
 		coord.RowIndex = row
-		for col := 0; col < grid.Width; col++ {
+		for col := 0; col < width; col++ {
 			coord.ColumnIndex = col
-			if on, _ := grid.IsOn(coord); on {
+			if on := view.IsOn(coord); on {
 				output.WriteByte('*')
 			} else {
 				output.WriteByte(' ')
@@ -71,7 +71,7 @@ func NewConsoleDisplay(r Renderer) *ConsoleDisplay {
 // Show renders all views in the ConsoleDisplay
 func (d *ConsoleDisplay) Show() {
 	for _, view := range d.views {
-		d.renderer.Render(view.Get())
+		d.renderer.Render(view)
 	}
 }
 
