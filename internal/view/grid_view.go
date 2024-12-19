@@ -6,8 +6,8 @@ import (
 )
 
 var (
-	GridViewWidth  = 36
-	GridViewHeight = 6
+	gridViewWidth  = 36
+	gridViewHeight = 6
 )
 
 type View interface {
@@ -23,12 +23,12 @@ type GridView struct {
 // NewView creates a new View with a fixed-size Grid
 func NewView() *GridView {
 	return &GridView{
-		data: *grid.NewGrid(GridViewHeight, GridViewWidth),
+		data: *grid.NewGrid(gridViewHeight, gridViewWidth),
 	}
 }
 
 func (v *GridView) Dimennsions() (int, int) {
-	return GridViewWidth, GridViewHeight
+	return gridViewWidth, gridViewHeight
 }
 
 func (v *GridView) IsOn(c transformer.Coordinate) bool {
