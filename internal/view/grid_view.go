@@ -5,15 +5,15 @@ import (
 	"elecsign/internal/transformer"
 )
 
-const (
+var (
 	GridViewWidth  = 36
 	GridViewHeight = 6
 )
 
 type View interface {
 	IsOn(transformer.Coordinate) bool
-	Get() grid.Grid
 	TurnOn([]transformer.Coordinate)
+	Dimennsions() (int, int)
 }
 
 type GridView struct {
@@ -27,8 +27,8 @@ func NewView() *GridView {
 	}
 }
 
-func (v *GridView) Get() grid.Grid {
-	return v.data
+func (v *GridView) Dimennsions() (int, int) {
+	return GridViewWidth, GridViewHeight
 }
 
 func (v *GridView) IsOn(c transformer.Coordinate) bool {
