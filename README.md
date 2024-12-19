@@ -285,3 +285,11 @@ electronic-sign/
 
 ### Fault Tolerance
 If you make a mistake (like typing "G1" when there's no row G), the program simply ignores it and continues with the valid instructions.
+
+
+### Future Work
+- Support for multiple displays
+- Support for dynamic display dimensions beyond 6x36
+- Support for dynamic data storage sizes like int32 or int64 instead of bytes
+- Memory usage optimization
+- Error handling and validation
